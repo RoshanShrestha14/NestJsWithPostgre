@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EmployeeModule } from './employee/employee.module';
+import { Employee } from './employee/employee.entity';
 
 @Module({
   imports: [
@@ -13,8 +15,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
+            entities: [Employee],
+
     }),
     UserModule,
+    EmployeeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
