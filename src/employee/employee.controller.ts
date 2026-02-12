@@ -6,9 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { EmployeeDto } from './dto/employee.dto';
+import { Employee } from './employee.entity';
 
 @Controller('employee')
 export class EmployeeController {
@@ -21,6 +23,14 @@ export class EmployeeController {
   @Get()
   async getAllEmployee() {
     return await this.employeeService.getAllEmployee();
+  }
+
+    @Get('search')
+  async searchEmployee(
+    @Query('firstName') firstName?: string,
+    @Query('department') department?: string,
+  ): Promise<Employee[]> {
+    return this.employeeService.search({ firstName, department });
   }
 
   @Get(':id')
@@ -40,4 +50,5 @@ export class EmployeeController {
   async deleteEmployee(@Param('id') id: string) {
     return this.employeeService.deleteEmployee(Number(id));
   }
+
 }

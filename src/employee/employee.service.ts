@@ -44,4 +44,25 @@ export class EmployeeService {
 
     return { message: 'Employee deleted successfully' };
   }
+
+  async search(filters: {
+    firstName?: string;
+    department?: string;
+  }): Promise<Employee[]> {
+    const query = this.employeeRepository.createQueryBuilder('employee');
+
+    if (filters.firstName) {
+      query.andWhere('employee.firstName ILIKE :firstName', {
+        firstName: `%${filters.firstName}%`,
+      });
+    }
+
+    if (filters.department) {
+      query.andWhere('employee.department = :dept', {
+        dept: filters.department,
+      });
+    }
+
+    return query.getMany();
+  }
 }
